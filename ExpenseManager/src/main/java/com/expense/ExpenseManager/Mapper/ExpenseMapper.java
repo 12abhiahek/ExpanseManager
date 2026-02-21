@@ -1,5 +1,8 @@
 package com.expense.ExpenseManager.Mapper;
 
+import com.expense.ExpenseManager.dto.ExpenseResponse;
+import com.expense.ExpenseManager.entity.Expense;
+
 public class ExpenseMapper {
 
     public static ExpenseResponse toResponse(Expense e) {

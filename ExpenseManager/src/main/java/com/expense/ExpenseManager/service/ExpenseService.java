@@ -1,5 +1,20 @@
 package com.expense.ExpenseManager.service;
 
+import com.expense.ExpenseManager.Mapper.ExpenseMapper;
+import com.expense.ExpenseManager.dto.ExpenseRequest;
+import com.expense.ExpenseManager.dto.ExpenseResponse;
+import com.expense.ExpenseManager.entity.CategoryRule;
+import com.expense.ExpenseManager.entity.Expense;
+import com.expense.ExpenseManager.repository.CategoryRuleRepository;
+import com.expense.ExpenseManager.repository.ExpenseRepository;
+import com.expense.ExpenseManager.util.CsvParserUtil;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -26,14 +41,25 @@ public class ExpenseService {
         return ExpenseMapper.toResponse(expense);
     }
 
+//    private String assignCategory(String vendor) {
+//
+//        return ruleRepository.findAll().stream()
+//                .filter(rule -> vendor.toLowerCase()
+//                        .contains(rule.getVendorKeyword().toLowerCase()))
+//                .map(CategoryRule::getCategory)
+//                .findFirst()
+//                .orElse("Others");
+//    }
+
     private String assignCategory(String vendor) {
 
-        return ruleRepository.findAll().stream()
-                .filter(rule -> vendor.toLowerCase()
-                        .contains(rule.getVendorKeyword().toLowerCase()))
-                .map(CategoryRule::getCategory)
-                .findFirst()
-                .orElse("Others");
+        List<CategoryRule> rules = ruleRepository.findMatchingRule(vendor);
+
+        if (!rules.isEmpty()) {
+            return rules.get(0).getCategory();
+        }
+
+        return "Others";
     }
 
     private void detectAnomaly(Expense expense) {
@@ -53,5 +79,11 @@ public class ExpenseService {
                 CsvParserUtil.parse(file);
 
         list.forEach(this::addExpense);
+    }
+
+    public List<ExpenseResponse> getAllExpenses() {
+        return expenseRepository.findAll().stream()
+                .map(ExpenseMapper::toResponse)
+                .toList();
     }
 }

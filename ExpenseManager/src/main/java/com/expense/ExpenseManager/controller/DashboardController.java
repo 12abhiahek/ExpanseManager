@@ -1,23 +1,48 @@
 package com.expense.ExpenseManager.controller;
 
-import com.expensemanager.dto.DashboardResponse;
-import com.expensemanager.service.DashboardService;
+import com.expense.ExpenseManager.dto.DashboardResponse;
+import com.expense.ExpenseManager.service.DashboardService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+
+//
+//@RestController
+//@RequestMapping("/api/dashboard")
+//@RequiredArgsConstructor
+//
+//public class DashboardController {
+//
+//    private final DashboardService service;
+//
+//
+//    @GetMapping
+//    public DashboardResponse getDashboard(
+//            @RequestParam int month) {
+//
+//        return service.getDashboard(month);
+//    }
+//}
 
 
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
-
+@CrossOrigin(origins = "http://localhost:5173") // optional if global CORS exists
 public class DashboardController {
 
     private final DashboardService service;
 
-
     @GetMapping
     public DashboardResponse getDashboard(
-            @RequestParam int month) {
+            @RequestParam(required = false) Integer month) {
+
+        // If month not passed → use current month
+        if (month == null) {
+            month = LocalDate.now().getMonthValue();
+        }
 
         return service.getDashboard(month);
     }

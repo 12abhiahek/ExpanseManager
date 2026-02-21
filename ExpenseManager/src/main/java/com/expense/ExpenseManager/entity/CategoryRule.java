@@ -1,5 +1,9 @@
 package com.expense.ExpenseManager.entity;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "category_rules")
 @Getter
