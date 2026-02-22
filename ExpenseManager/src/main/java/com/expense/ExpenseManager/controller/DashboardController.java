@@ -8,32 +8,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-//
-//@RestController
-//@RequestMapping("/api/dashboard")
-//@RequiredArgsConstructor
-//
-//public class DashboardController {
-//
-//    private final DashboardService service;
-//
-//
-//    @GetMapping
-//    public DashboardResponse getDashboard(
-//            @RequestParam int month) {
-//
-//        return service.getDashboard(month);
-//    }
-//}
-
-
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173") // optional if global CORS exists
 public class DashboardController {
 
-    private final DashboardService service;
+    private final DashboardService dashboardService;
 
     @GetMapping
     public DashboardResponse getDashboard(
@@ -44,6 +25,11 @@ public class DashboardController {
             month = LocalDate.now().getMonthValue();
         }
 
-        return service.getDashboard(month);
+        return dashboardService.getDashboard(month);
+    }
+
+    @GetMapping("/dashboard")
+    public DashboardResponse getDashboard(@RequestParam int month) {
+        return dashboardService.getDashboard(month);
     }
 }

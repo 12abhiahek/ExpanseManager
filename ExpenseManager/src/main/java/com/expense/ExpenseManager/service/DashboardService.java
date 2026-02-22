@@ -14,56 +14,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-//public class DashboardService {
-//
-//    private final ExpenseRepository repository;
-//
-//    public DashboardResponse getDashboard(int month) {
-//
-//        List<Expense> expenses =
-//                repository.findByMonth(month);
-//
-//        Map<String, Double> monthlyTotals =
-//                expenses.stream()
-//                        .collect(Collectors.groupingBy(
-//                                Expense::getCategory,
-//                                Collectors.summingDouble(Expense::getAmount)));
-//
-//        List<String> topVendors =
-//                expenses.stream()
-//                        .collect(Collectors.groupingBy(
-//                                Expense::getVendorName,
-//                                Collectors.summingDouble(Expense::getAmount)))
-//                        .entrySet().stream()
-//                        .sorted(Map.Entry.<String, Double>
-//                                comparingByValue().reversed())
-//                        .limit(5)
-//                        .map(Map.Entry::getKey)
-//                        .toList();
-//
-//        long anomalyCount =
-//                expenses.stream()
-//                        .filter(Expense::getAnomaly)
-//                        .count();
-//
-//        return new DashboardResponse(
-//                monthlyTotals,
-//                topVendors,
-//                anomalyCount
-//        );
-//    }
-//}
-
-
-//@Service
-//@RequiredArgsConstructor
 public class DashboardService {
 
     private final ExpenseRepository repository;
 
     public DashboardResponse getDashboard(int month) {
 
-        // 1️⃣ Category totals
+        //  Category totals
         Map<String, Double> monthlyTotals =
                 repository.findMonthlyTotals(month)
                         .stream()
@@ -72,7 +29,7 @@ public class DashboardService {
                                 row -> (Double) row[1]
                         ));
 
-        // 2️⃣ Top vendors
+        //  Top vendors
         List<Map<String, Object>> topVendors =
                 repository.findTopVendors(month)
                         .stream()
@@ -85,7 +42,7 @@ public class DashboardService {
                         })
                         .toList();
 
-        // 3️⃣ Anomaly count
+        //  Anomaly count
         long anomalyCount =
                 repository.countMonthlyAnomalies(month);
 

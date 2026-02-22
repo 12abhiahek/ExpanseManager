@@ -34,9 +34,13 @@ public class ExpenseService {
         String category = assignCategory(request.getVendorName());
         expense.setCategory(category);
 
+        // Detect BEFORE saving
+        boolean isAnomaly = isAnomaly(category, request.getAmount());
+        expense.setAnomaly(isAnomaly);
+
         expenseRepository.save(expense);
 
-        detectAnomaly(expense);
+//        detectAnomaly(expense);
 
         return ExpenseMapper.toResponse(expense);
     }
@@ -62,16 +66,30 @@ public class ExpenseService {
         return "Others";
     }
 
-    private void detectAnomaly(Expense expense) {
+//    private void detectAnomaly(Expense expense) {
+//
+//        Double avg =
+//                expenseRepository.findAverageByCategory(
+//                        expense.getCategory());
+//
+//        if (avg != null && avg > 0 &&
+//                expense.getAmount() > 3 * avg) {
+//            expense.setAnomaly(true);
+//        }
+//    }
 
-        Double avg =
-                expenseRepository.findAverageByCategory(
-                        expense.getCategory());
 
-        if (avg != null && avg > 0 &&
-                expense.getAmount() > 3 * avg) {
-            expense.setAnomaly(true);
+    private boolean isAnomaly(String category, Double amount) {
+
+        Double avg = expenseRepository.findAverageByCategory(category);
+
+        if (avg == null || avg == 0) {
+            return false;  // first entry case
         }
+
+        double threshold = avg * 3;
+
+        return amount > threshold;
     }
 
     public void uploadCsv(MultipartFile file) {
