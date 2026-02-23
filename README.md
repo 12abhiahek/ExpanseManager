@@ -98,3 +98,16 @@ A key trade-off made was calculating the category average dynamically at inserti
 - id
 - vendorKeyword
 - category
+
+### Screen Short
+- Dashboard Deatils
+<img width="1873" height="1017" alt="image" src="https://github.com/user-attachments/assets/a5b24c71-8e8c-4055-ad60-d0ae1f8c5788" />
+
+- <img width="1598" height="720" alt="image" src="https://github.com/user-attachments/assets/c59c6438-5970-4d01-a709-2b439d98531c" />
+
+- Expense management
+<img width="1576" height="833" alt="image" src="https://github.com/user-attachments/assets/fd9328a2-116d-4243-8dee-0f485b532a30" />
+
+-Expense Table
+<img width="1605" height="764" alt="image" src="https://github.com/user-attachments/assets/7d1870d5-1174-417b-b620-403cb16256a5" />
+
